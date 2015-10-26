@@ -1,16 +1,14 @@
 package group;
 
 
-import org.apache.commons.lang3.SerializationUtils;
+
+import org.jgroups.*;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.util.Util;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Stack;
 
 /**
@@ -21,13 +19,19 @@ public class ReplStack<T> extends ReceiverAdapter{
     private JChannel channel;
     private String channelName;
 
-    public ReplStack(String channelName) throws Exception{
+    public ReplStack(String channelName) {
         this.channelName = channelName;
         stack = new Stack<T>();
+    }
 
+    public void connectChannel() throws Exception {
         this.channel = new JChannel();
         this.channel.setReceiver(this);
         this.channel.connect(this.channelName);
+    }
+
+    public void closeChannel() {
+        channel.close();
     }
 
     @Override
@@ -75,4 +79,15 @@ public class ReplStack<T> extends ReceiverAdapter{
     public T top(){
         return stack.peek();
     }
+
+    public int size()
+    {
+        return stack.size();
+    }
+
+    public boolean isEmpty()
+    {
+        return stack.isEmpty();
+    }
+
 }
