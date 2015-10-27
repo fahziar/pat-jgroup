@@ -52,6 +52,7 @@ public class SimpleClient {
                 }
                 else if (line.equals("pop")) {
                     String poppedString = (String) replStack.pop();
+                    System.out.println("Popped String : "+poppedString);
                 }
                 else if (line.equals("top")) {
                     System.out.println(replStack.top());
